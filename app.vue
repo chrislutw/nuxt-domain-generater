@@ -36,7 +36,7 @@ const envs = ref([
   {
     name: "staging",
     label: "staging",
-    prefix: "staging-",
+    prefix: "test-",
     cmdResult: "",
     officeResult: "",
   },
