@@ -5,30 +5,30 @@ const domains = computed(() => {
   return domainsText.value.split("\n") || [];
 });
 
-const sites = ref([
-  { name: "history", rule: "dfw-web-rules", ip: "34.49.47.207", enable: true },
+const sites = useLocalStorage("domain-gen-setting", [
+  { name: "history", rule: "dfw-web-rules", ip: "", enable: true },
   {
     name: "history-api",
     rule: "dfw-web-api-rules",
-    ip: "34.49.7.13",
+    ip: "",
     enable: true,
   },
   {
     name: "language-api",
     rule: "language-api-rules",
-    ip: "34.49.43.97",
+    ip: "",
     enable: true,
   },
   {
     name: "domain-redirect-api",
     rule: "dfw-domain-redirect-api-rules",
-    ip: "34.49.18.211",
+    ip: "",
     enable: true,
   },
   {
     name: "refer",
     rule: "dfw-domain-redirect-api-rules",
-    ip: "34.49.18.211",
+    ip: "",
     enable: true,
   },
 ]);
@@ -95,17 +95,23 @@ function generate() {
         :rows="10"
       />
       <UTabs v-model="selectedEnvIndex" :items="envs" />
-      <UFormGroup
-        :ui="{ container: 'ui-container flex items-center gap-4' }"
-        :label="site.name"
-        :name="site.name"
-        v-for="site in sites"
-        :key="site"
-      >
-        <UInput v-model="site.name" class="w-2/5" />
-        <UInput v-model="site.ip" class="w-2/5" />
-        <UToggle v-model="site.enable" />
-      </UFormGroup>
+      <ClientOnly>
+        <UFormGroup
+          :ui="{ container: 'ui-container flex items-center gap-4' }"
+          :label="site.name"
+          :name="site.name"
+          v-for="site in sites"
+          :key="site"
+        >
+          <UInput v-model="site.name" class="w-2/5" />
+          <UInput
+            v-model="site.ip"
+            placeholder="請自行查詢輸入ip"
+            class="w-2/5"
+          />
+          <UToggle v-model="site.enable" />
+        </UFormGroup>
+      </ClientOnly>
       <div class="mt-4 mx-auto w-full flex items-center justify-center">
         <UButton class="px-20" size="xl" @click="generate()">產生</UButton>
       </div>
